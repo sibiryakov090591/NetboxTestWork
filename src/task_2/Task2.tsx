@@ -4,7 +4,7 @@ import {DataGrid, ColDef} from '@material-ui/data-grid';
 import {useDispatch, useSelector} from "react-redux";
 import {initializeAPI, reducerActions} from "./reducer";
 import {GlobalStateType} from "./store";
-import {EditableSpan} from "./EditebleSpan/EditableSpan";
+import {EditableElement} from "./EditebleElement/EditableElement";
 
 const Task2: React.FC = () => {
 
@@ -13,8 +13,9 @@ const Task2: React.FC = () => {
 
     useEffect(() => {
         dispatch(initializeAPI())
-    }, [dispatch])
+    }, [])
 
+    // For Material ui table
     const columns: ColDef[] = [
         {field: 'id', headerName: 'ID', width: 70},
         {field: 'name', headerName: 'Name', width: 300},
@@ -46,7 +47,7 @@ const Task2: React.FC = () => {
     if (tableData.length > 0) {
 
         const mapTableHeaders = tableData[0].map(i => <th>{i.field}</th>)
-        const mapTableRows = tableData.map(item => <EditableSpan tableItem={item}/>)
+        const mapTableRows = tableData.map(item => <EditableElement key={item[0].value} tableItem={item}/>)
 
         return (
             <section className={styles.table}>
@@ -73,4 +74,4 @@ const Task2: React.FC = () => {
     } else return <h1>Загрузка...</h1>
 }
 
-export default React.memo(Task2);
+export default Task2;

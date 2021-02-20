@@ -13,6 +13,7 @@ export type ItemType = ObjectItemType[]
 const initialState: ItemType[] = []
 
 const reducer = (state: ItemType[] = initialState, action: ReducerActionsType): ItemType[] => {
+
     switch (action.type) {
 
         case SET_DATA: {
@@ -30,15 +31,23 @@ const reducer = (state: ItemType[] = initialState, action: ReducerActionsType): 
         }
 
         case SAVE_ITEM: {
-            // shallow state copy
-            const copy = [...state.map(item => {
-                const stateObj = item.find(i => i.field === "ID")
-                const actionObj = action.data.find(i => i.field === "ID")
-                if (stateObj && actionObj && stateObj.value === actionObj.value) {
-                    return action.data
-                } else return item
+            return [...state.map(item => {
+
+                for (let i = 0; i < item.length; i++) {
+                    if (item[i].field === "ID" && item[i].value === action.id) {
+                        const copy = [...item.map(i => ({...i}))]
+                        copy.map(i => {
+                            if (i.field === "Name") i.value = action.name
+                            if (i.field === "Age") i.value = action.age
+                            if (i.field === "Phone") i.value = action.phone
+                            if (i.field === "E-mail") i.value = action.email
+                        })
+                        return copy
+                    }
+                }
+
+                return item
             })]
-            return copy
         }
 
         default:
@@ -49,8 +58,12 @@ const reducer = (state: ItemType[] = initialState, action: ReducerActionsType): 
 // actions
 export const reducerActions = {
     getData: (data: ItemType[]) => ({type: SET_DATA, payload: data} as const),
-    deleteItem: (id: number | string) => ({type: DELETE_ITEM, itemId: id} as const),
-    saveItem: (data: ItemType) => ({type: SAVE_ITEM, data} as const)
+    deleteItem: (id: number) => ({type: DELETE_ITEM, itemId: id} as const),
+    saveItem: (id: number,
+               name: string,
+               age: number,
+               phone: string,
+               email: string) => ({type: SAVE_ITEM, id, name, age, phone, email} as const)
 }
 
 // Actions Global Type for reducer:
@@ -68,10 +81,21 @@ export const initializeAPI = (): ThunkType => async (dispatch) => {
     } else throw response.statusText || " SOmeError"
 }
 
-export const deleteItemAPI = (id: string | number): ThunkType => async (dispatch) => {
+export const deleteItemAPI = (id: number): ThunkType => async (dispatch) => {
     const response = await axios.get(`https://frontend-test.netbox.ru?method=delete&id=${id}`)
     if (response.status === 200) {
-        dispatch(reducerActions.getData(response.data))
+        dispatch(reducerActions.deleteItem(id))
+    } else throw response.statusText || " SOmeError"
+}
+
+export const updateItemAPI = (id: number,
+                              name: string,
+                              age: number,
+                              phone: string,
+                              email: string): ThunkType => async (dispatch) => {
+    const response = await axios.get(`https://frontend-test.netbox.ru?method=update&id=${id}&name=${name}&age=${age}&phone=${phone}&email=${email}`)
+    if (response.status === 200) {
+        dispatch(reducerActions.saveItem(id, name, age, phone, email))
     } else throw response.statusText || " SOmeError"
 }
 
