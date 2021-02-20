@@ -48,30 +48,34 @@ export const EditableElement: React.FC<PropsType> = ((props) => {
         <tr>
             <td>{id}</td>
             <td>{editMode ? <input className={styles.input}
-                                   type="text" value={nameTitle}
+                                   type="text"
+                                   value={nameTitle}
                                    onChange={onChangeNameTitleHandler}/> : name}
             </td>
             <td>{editMode ? <input className={styles.input}
-                                   type="text" value={ageTitle}
+                                   type="number"
+                                   value={ageTitle}
                                    onChange={onChangeAgeTitleHandler}/> : age}
             </td>
             <td>{editMode ? <input className={styles.input}
-                                   type="text" value={phoneTitle}
+                                   type="text"
+                                   value={phoneTitle}
                                    onChange={onChangePhoneTitleHandler}/> : phone}
             </td>
             <td>{editMode ? <input className={styles.input}
-                                   type="text" value={emailTitle}
+                                   type="text"
+                                   value={emailTitle}
                                    onChange={onChangeEmailTitleHandler}/> : email}
             </td>
             <td>
                 {
                     editMode
-                        ? <button className={styles.btn} onClick={saveItemHandler}>Save</button>
-                        : <button className={styles.btn} onClick={activateEditModeHandler}>Change</button>
+                        ? <button className={styles.btn} onClick={saveItemHandler}>Сохранить</button>
+                        : <button className={styles.btn} onClick={activateEditModeHandler}>Изменить</button>
                 }
             </td>
             <td>
-                <button className={styles.btn} onClick={deleteItemHandler}>Delete</button>
+                <button className={styles.btn} onClick={deleteItemHandler}>Удалить</button>
             </td>
         </tr>
     )

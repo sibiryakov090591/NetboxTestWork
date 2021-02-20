@@ -5,6 +5,7 @@ import axios from "axios";
 const SET_DATA = "reducer/SET_DATA"
 const DELETE_ITEM = "reducer/DELETE_ITEM"
 const SAVE_ITEM = "reducer/SAVE_ITEM"
+const ADD_ITEM = "reducer/ADD_ITEM"
 
 type ObjectItemType = { field: string, value: number | string, type: string }
 
@@ -50,6 +51,20 @@ const reducer = (state: ItemType[] = initialState, action: ReducerActionsType): 
             })]
         }
 
+        case ADD_ITEM: {
+            const newItem = [
+                {field: "ID", value: state.length + 1, type: "integer"},
+                {field: "Name", value: action.name, type: "string" },
+                {field: "Age", value: action.age, type: "integer" },
+                {field: "Phone", value: action.phone, type: "string"},
+                {field: "E-mail", value: action.email, type: "string"}
+            ]
+            return [
+                ...state,
+                newItem
+            ]
+        }
+
         default:
             return state
     }
@@ -63,7 +78,11 @@ export const reducerActions = {
                name: string,
                age: number,
                phone: string,
-               email: string) => ({type: SAVE_ITEM, id, name, age, phone, email} as const)
+               email: string) => ({type: SAVE_ITEM, id, name, age, phone, email} as const),
+    addItem: (name: string,
+              age: number,
+              phone: string,
+              email: string) => ({type: ADD_ITEM, name, age, phone, email} as const)
 }
 
 // Actions Global Type for reducer:
@@ -96,6 +115,16 @@ export const updateItemAPI = (id: number,
     const response = await axios.get(`https://frontend-test.netbox.ru?method=update&id=${id}&name=${name}&age=${age}&phone=${phone}&email=${email}`)
     if (response.status === 200) {
         dispatch(reducerActions.saveItem(id, name, age, phone, email))
+    } else throw response.statusText || " SOmeError"
+}
+
+export const addItemAPI = (name: string,
+                              age: number,
+                              phone: string,
+                              email: string): ThunkType => async (dispatch) => {
+    const response = await axios.get(`https://frontend-test.netbox.ru?method=add&name=${name}&age=${age}&phone=${phone}&email=${email}`)
+    if (response.status === 200) {
+        dispatch(reducerActions.addItem(name, age, phone, email))
     } else throw response.statusText || " SOmeError"
 }
 

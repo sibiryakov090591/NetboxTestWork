@@ -12,6 +12,20 @@
     width: 1200px
 }
 
+.btn {
+    width: 100px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    transition: .1s all ease-in-out;
+}
+
+.btn:hover {
+    background-color: #ffffff;
+}
+
 
 @media (max-width: 375px) {
     .widgetBorderWrap:before {
