@@ -61,8 +61,15 @@ export type ReducerActionsType = ReturnType<PropertiesType<typeof reducerActions
 // Thunks type
 type ThunkType = ThunkAction<Promise<void>, ItemType, unknown, ReducerActionsType>
 
-export const initialize = (): ThunkType => async (dispatch) => {
+export const initializeAPI = (): ThunkType => async (dispatch) => {
     const response = await axios.get("https://frontend-test.netbox.ru/")
+    if (response.status === 200) {
+        dispatch(reducerActions.getData(response.data))
+    } else throw response.statusText || " SOmeError"
+}
+
+export const deleteItemAPI = (id: string | number): ThunkType => async (dispatch) => {
+    const response = await axios.get(`https://frontend-test.netbox.ru?method=delete&id=${id}`)
     if (response.status === 200) {
         dispatch(reducerActions.getData(response.data))
     } else throw response.statusText || " SOmeError"

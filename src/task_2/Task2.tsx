@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import styles from "./Task2.module.css";
 import {DataGrid, ColDef} from '@material-ui/data-grid';
 import {useDispatch, useSelector} from "react-redux";
-import {initialize, reducerActions} from "./reducer";
+import {initializeAPI, reducerActions} from "./reducer";
 import {GlobalStateType} from "./store";
 import {EditableSpan} from "./EditebleSpan/EditableSpan";
 
@@ -12,7 +12,7 @@ const Task2: React.FC = () => {
     const tableData = useSelector((state: GlobalStateType) => state.reducer)
 
     useEffect(() => {
-        dispatch(initialize())
+        dispatch(initializeAPI())
     }, [dispatch])
 
     const columns: ColDef[] = [
@@ -63,6 +63,10 @@ const Task2: React.FC = () => {
                         </tr>
                         {mapTableRows}
                     </table>
+
+                    <div>
+                        Колличество строк в таблице: {tableData.length}
+                    </div>
                 </div>
             </section>
         )
