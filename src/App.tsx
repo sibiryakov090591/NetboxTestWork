@@ -1,24 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Task1 from './task_1/Task1';
+import Task2 from './task_2/Task2';
+import {Provider} from "react-redux";
+import {store} from "./task_2/store";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+
+        {/*<Task1/> /!*  Responding HTML Widget  *!/*/}
+
+        <Provider store={store}>
+            <Task2/> {/*  Table with API response  */}
+        </Provider>
+
     </div>
   );
 }

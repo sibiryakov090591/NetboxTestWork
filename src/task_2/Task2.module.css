@@ -1,0 +1,28 @@
+/*  section body  */
+.table {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    height: 100vh;
+}
+
+.container {
+    height: 400px;
+    width: 1200px
+}
+
+
+@media (max-width: 375px) {
+    .widgetBorderWrap:before {
+        display: none;
+    }
+    .widgetInner {
+        margin-right: 15px;
+        padding: 50px 30px;
+    }
+    .text {
+        font-size: 12px;
+        line-height: 20px;
+    }
+}
