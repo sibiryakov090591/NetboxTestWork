@@ -7,7 +7,7 @@ type PropsType = {
     tableItem: ItemType
 }
 
-export const EditableElement: React.FC<PropsType> = ((props) => {
+export const EditableElement: React.FC<PropsType> = React.memo(((props) => {
 
     const [id, name, age, phone, email] = props.tableItem.map(i => i.value)
 
@@ -79,4 +79,4 @@ export const EditableElement: React.FC<PropsType> = ((props) => {
             </td>
         </tr>
     )
-})
+}))

@@ -9,7 +9,7 @@ const App: React.FC = () => {
   return (
     <div className="app">
 
-        {/*<Task1/> /!*  Responding HTML Widget  *!/*/}
+        <Task1/> {/*  Responding HTML Widget  */}
 
         <Provider store={store}>
             <Task2/> {/*  Table with API response  */}

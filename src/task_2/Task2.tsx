@@ -2,7 +2,7 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import styles from "./Task2.module.css";
 import {DataGrid, ColDef} from '@material-ui/data-grid';
 import {useDispatch, useSelector} from "react-redux";
-import {addItemAPI, initializeAPI, reducerActions} from "./reducer";
+import {addItemAPI, initializeAPI} from "./reducer";
 import {GlobalStateType} from "./store";
 import {EditableElement} from "./EditebleElement/EditableElement";
 
@@ -11,6 +11,7 @@ const Task2: React.FC = () => {
     const dispatch = useDispatch()
     const tableData = useSelector((state: GlobalStateType) => state.reducer)
 
+    // local state for add item inputs
     const [nameTitle, setNameTitle] = useState<string>("")
     const [ageTitle, setAgeTitle] = useState<number>(0)
     const [phoneTitle, setPhoneTitle] = useState<string>("")
@@ -18,7 +19,8 @@ const Task2: React.FC = () => {
 
     useEffect(() => {
         dispatch(initializeAPI())
-    }, [])
+    }, [dispatch])
+
 
     // For Material ui table
     // const columns: ColDef[] = [
@@ -48,6 +50,8 @@ const Task2: React.FC = () => {
     //     } else return {}
     // })
 
+
+    // add item inputs handlers
     const onChangeNameTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNameTitle(e.currentTarget.value)
     }
@@ -61,16 +65,16 @@ const Task2: React.FC = () => {
     const onChangeEmailTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setEmailTitle(e.currentTarget.value)
     }
-
     const addItemHandler = () => {
         dispatch(addItemAPI(nameTitle, ageTitle, phoneTitle, emailTitle))
+        // clear inputs
         setNameTitle("")
         setAgeTitle(0)
         setPhoneTitle("")
         setEmailTitle("")
     }
 
-    // When initialization data success
+    // Show preloader before initialization data success
     if (tableData.length > 0) {
 
         const mapTableHeaders = tableData[0].map(i => <th key={i.value}>{i.field}</th>)
@@ -129,4 +133,4 @@ const Task2: React.FC = () => {
     } else return <h1>Загрузка...</h1>
 }
 
-export default Task2;
+export default React.memo(Task2);

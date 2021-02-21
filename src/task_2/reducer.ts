@@ -1,19 +1,20 @@
 import {ThunkAction} from "redux-thunk";
 import axios from "axios";
 
-// constants
+// Constants
 const SET_DATA = "reducer/SET_DATA"
 const DELETE_ITEM = "reducer/DELETE_ITEM"
 const SAVE_ITEM = "reducer/SAVE_ITEM"
 const ADD_ITEM = "reducer/ADD_ITEM"
 
-type ObjectItemType = { field: string, value: number | string, type: string }
 
+type ObjectItemType = { field: string, value: number | string, type: string }
 export type ItemType = ObjectItemType[]
+
 
 const initialState: ItemType[] = []
 
-const reducer = (state: ItemType[] = initialState, action: ReducerActionsType): ItemType[] => {
+export const reducer = (state: ItemType[] = initialState, action: ReducerActionsType): ItemType[] => {
 
     switch (action.type) {
 
@@ -46,7 +47,6 @@ const reducer = (state: ItemType[] = initialState, action: ReducerActionsType): 
                         return copy
                     }
                 }
-
                 return item
             })]
         }
@@ -70,7 +70,7 @@ const reducer = (state: ItemType[] = initialState, action: ReducerActionsType): 
     }
 }
 
-// actions
+// Actions
 export const reducerActions = {
     getData: (data: ItemType[]) => ({type: SET_DATA, payload: data} as const),
     deleteItem: (id: number) => ({type: DELETE_ITEM, itemId: id} as const),
@@ -85,6 +85,7 @@ export const reducerActions = {
               email: string) => ({type: ADD_ITEM, name, age, phone, email} as const)
 }
 
+
 // Actions Global Type for reducer:
 type PropertiesType<T> = T extends { [key: string]: infer U } ? U : any
 export type ReducerActionsType = ReturnType<PropertiesType<typeof reducerActions>>
@@ -93,6 +94,8 @@ export type ReducerActionsType = ReturnType<PropertiesType<typeof reducerActions
 // Thunks type
 type ThunkType = ThunkAction<Promise<void>, ItemType, unknown, ReducerActionsType>
 
+
+// Thunks
 export const initializeAPI = (): ThunkType => async (dispatch) => {
     const response = await axios.get("https://frontend-test.netbox.ru/")
     if (response.status === 200) {
