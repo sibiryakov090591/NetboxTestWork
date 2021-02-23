@@ -75,62 +75,76 @@ const Task2: React.FC = () => {
     }
 
     // Show preloader before initialization data success
+    if (!tableData) return <h1>Загрузка...</h1>
+
+    // Default table values
+    let mapTableHeaders: JSX.Element | JSX.Element[] = (
+        <>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Phone</th>
+            <th>Email</th>
+        </>
+    )
+    let mapTableRows = null
+
     if (tableData.length > 0) {
-
-        const mapTableHeaders = tableData[0].map(i => <th key={i.value}>{i.field}</th>)
-        const mapTableRows = tableData.map(item => <EditableElement key={item[0].value} tableItem={item}/>)
-
-        return (
-            <section className={styles.table}>
-                <div className={styles.container}>
-
-                    {/*  Table from Material ui with good sorts methods, but without delete and add functions  */}
-                    {/*  <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection/>  */}
+        mapTableHeaders = tableData[0].map(i => <th key={i.value}>{i.field}</th>)
+        mapTableRows = tableData.map(item => <EditableElement key={item[0].value} tableItem={item}/>)
+    }
 
 
-                    {/*  Custom native table  */}
-                    <table>
-                        <tr>
-                            {mapTableHeaders}
-                        </tr>
+    return (
+        <section className={styles.table}>
+            <div className={styles.container}>
 
-                        {mapTableRows}
+                {/*  Table from Material ui with good sorts methods, but without delete and add functions  */}
+                {/*  <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection/>  */}
 
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input value={nameTitle}
-                                       onChange={onChangeNameTitleHandler}
-                                       type="text"/>
-                            </td>
-                            <td>
-                                <input value={ageTitle}
-                                       onChange={onChangeAgeTitleHandler}
-                                       type="number"/>
-                            </td>
-                            <td>
-                                <input value={phoneTitle}
-                                       onChange={onChangePhoneTitleHandler}
-                                       type="text"/>
-                            </td>
-                            <td>
-                                <input value={emailTitle}
-                                       onChange={onChangeEmailTitleHandler}
-                                       type="text"/>
-                            </td>
-                            <td>
-                                <button className={styles.btn} onClick={addItemHandler}>Добавить</button>
-                            </td>
-                        </tr>
-                    </table>
 
-                    <div>
-                        Колличество строк в таблице: {tableData.length}
-                    </div>
+                {/*  Custom native table  */}
+                <table>
+                    <tr>
+                        {mapTableHeaders}
+                    </tr>
+
+                    {mapTableRows}
+
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input value={nameTitle}
+                                   onChange={onChangeNameTitleHandler}
+                                   type="text"/>
+                        </td>
+                        <td>
+                            <input value={ageTitle}
+                                   onChange={onChangeAgeTitleHandler}
+                                   type="number"/>
+                        </td>
+                        <td>
+                            <input value={phoneTitle}
+                                   onChange={onChangePhoneTitleHandler}
+                                   type="text"/>
+                        </td>
+                        <td>
+                            <input value={emailTitle}
+                                   onChange={onChangeEmailTitleHandler}
+                                   type="text"/>
+                        </td>
+                        <td>
+                            <button className={styles.btn} onClick={addItemHandler}>Добавить</button>
+                        </td>
+                    </tr>
+                </table>
+
+                <div>
+                    Колличество строк в таблице: {tableData.length}
                 </div>
-            </section>
-        )
-    } else return <h1>Загрузка...</h1>
+            </div>
+        </section>
+    )
 }
 
 export default React.memo(Task2);

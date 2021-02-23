@@ -12,9 +12,9 @@ type ObjectItemType = { field: string, value: number | string, type: string }
 export type ItemType = ObjectItemType[]
 
 
-const initialState: ItemType[] = []
+const initialState: ItemType[] | null = null
 
-export const reducer = (state: ItemType[] = initialState, action: ReducerActionsType): ItemType[] => {
+export const reducer = (state: ItemType[] | null = initialState, action: ReducerActionsType): ItemType[] | null => {
 
     switch (action.type) {
 
@@ -23,50 +23,56 @@ export const reducer = (state: ItemType[] = initialState, action: ReducerActions
         }
 
         case DELETE_ITEM: {
-            return state.filter(item => {
-                for (let i = 0; i < item.length; i++) {
-                    if (item[i].field === "ID" && item[i].value === action.itemId) {
-                        return false
-                    } else return true
-                }
-            })
+            if (state) {
+                return state.filter(item => {
+                    for (let i = 0; i < item.length; i++) {
+                        if (item[i].field === "ID" && item[i].value === action.itemId) {
+                            return false
+                        } else return true
+                    }
+                })
+            } else return state
         }
 
         case SAVE_ITEM: {
-            return [...state.map(item => {
+            if (state) {
+                return [...state.map(item => {
 
-                for (let i = 0; i < item.length; i++) {
-                    if (item[i].field === "ID" && item[i].value === action.id) {
-                        const copy = [...item.map(i => ({...i}))]
-                        copy.map(i => {
-                            if (i.field === "Name") i.value = action.name
-                            if (i.field === "Age") i.value = action.age
-                            if (i.field === "Phone") i.value = action.phone
-                            if (i.field === "E-mail") i.value = action.email
-                        })
-                        return copy
+                    for (let i = 0; i < item.length; i++) {
+                        if (item[i].field === "ID" && item[i].value === action.id) {
+                            const copy = [...item.map(i => ({...i}))]
+                            copy.map(i => {
+                                if (i.field === "Name") i.value = action.name
+                                if (i.field === "Age") i.value = action.age
+                                if (i.field === "Phone") i.value = action.phone
+                                if (i.field === "E-mail") i.value = action.email
+                            })
+                            return copy
+                        }
                     }
-                }
-                return item
-            })]
+                    return item
+                })]
+            } else return state
         }
 
         case ADD_ITEM: {
-            const newItem = [
-                {field: "ID", value: state.length + 1, type: "integer"},
-                {field: "Name", value: action.name, type: "string" },
-                {field: "Age", value: action.age, type: "integer" },
-                {field: "Phone", value: action.phone, type: "string"},
-                {field: "E-mail", value: action.email, type: "string"}
-            ]
-            return [
-                ...state,
-                newItem
-            ]
+            if (state) {
+                const newItem = [
+                    {field: "ID", value: state.length + 1, type: "integer"},
+                    {field: "Name", value: action.name, type: "string"},
+                    {field: "Age", value: action.age, type: "integer"},
+                    {field: "Phone", value: action.phone, type: "string"},
+                    {field: "E-mail", value: action.email, type: "string"}
+                ]
+                return [
+                    ...state,
+                    newItem
+                ]
+            } else return state
         }
 
         default:
-            return state
+            return null
     }
 }
 
@@ -122,9 +128,9 @@ export const updateItemAPI = (id: number,
 }
 
 export const addItemAPI = (name: string,
-                              age: number,
-                              phone: string,
-                              email: string): ThunkType => async (dispatch) => {
+                           age: number,
+                           phone: string,
+                           email: string): ThunkType => async (dispatch) => {
     const response = await axios.get(`https://frontend-test.netbox.ru?method=add&name=${name}&age=${age}&phone=${phone}&email=${email}`)
     if (response.status === 200) {
         dispatch(reducerActions.addItem(name, age, phone, email))
