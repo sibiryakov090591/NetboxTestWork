@@ -41,30 +41,27 @@ export const EditableElement: React.FC<PropsType> = React.memo(((props) => {
         }
     }
 
+    // mapTdInputs
+    const mapTd = (inputType: string, inputValue: string | number, callback: any, event: string, propTableValue: React.ReactText) => {
+        return (
+            <td>
+                {editMode ? <input className={styles.input}
+                                   type={inputType}
+                                   value={inputValue}
+                                   onChange={onChangeTitleHandler(callback, event)}/> : propTableValue}
+            </td>
+        )
+    }
+
     // render
     return (
         <tr>
             <td>{id}</td>
-            <td>{editMode ? <input className={styles.input}
-                                   type="text"
-                                   value={nameTitle}
-                                   onChange={onChangeTitleHandler(setNameTitle, "string")}/> : name}
-            </td>
-            <td>{editMode ? <input className={styles.input}
-                                   type="number"
-                                   value={ageTitle}
-                                   onChange={onChangeTitleHandler(setAgeTitle, "number")}/> : age}
-            </td>
-            <td>{editMode ? <input className={styles.input}
-                                   type="text"
-                                   value={phoneTitle}
-                                   onChange={onChangeTitleHandler(setPhoneTitle, "string")}/> : phone}
-            </td>
-            <td>{editMode ? <input className={styles.input}
-                                   type="text"
-                                   value={emailTitle}
-                                   onChange={onChangeTitleHandler(setEmailTitle, "string")}/> : email}
-            </td>
+            {mapTd("text", nameTitle, setNameTitle, "string", name)}
+            {mapTd("number", ageTitle, setAgeTitle, "number", age)}
+            {mapTd("text", phoneTitle, setPhoneTitle, "string", phone)}
+            {mapTd("text", emailTitle, setEmailTitle, "string", email)}
+
             <td>
                 {
                     editMode

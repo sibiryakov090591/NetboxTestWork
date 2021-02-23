@@ -94,6 +94,19 @@ const Task2: React.FC = () => {
         mapTableRows = tableData.map(item => <EditableElement key={item[0].value} tableItem={item}/>)
     }
 
+    // mapTdInputs
+    const mapTd = (inputType: string, inputValue: string | number, callback: any, event: string) => {
+        return (
+            <td>
+                <input className={styles.input}
+                                   type={inputType}
+                                   value={inputValue}
+                                   onChange={onChangeTitleHandler(callback, event)}
+                />
+            </td>
+        )
+    }
+
 
     return (
         <section className={styles.table}>
@@ -113,26 +126,12 @@ const Task2: React.FC = () => {
 
                     <tr>
                         <td></td>
-                        <td>
-                            <input value={nameTitle}
-                                   onChange={onChangeTitleHandler(setNameTitle, "string")}
-                                   type="text"/>
-                        </td>
-                        <td>
-                            <input value={ageTitle}
-                                   onChange={onChangeTitleHandler(setAgeTitle, "number")}
-                                   type="number"/>
-                        </td>
-                        <td>
-                            <input value={phoneTitle}
-                                   onChange={onChangeTitleHandler(setPhoneTitle, "string")}
-                                   type="text"/>
-                        </td>
-                        <td>
-                            <input value={emailTitle}
-                                   onChange={onChangeTitleHandler(setEmailTitle, "string")}
-                                   type="text"/>
-                        </td>
+
+                        {mapTd("text", nameTitle, setNameTitle, "string")}
+                        {mapTd("number", ageTitle, setAgeTitle, "number")}
+                        {mapTd("text", phoneTitle, setPhoneTitle, "string")}
+                        {mapTd("text", emailTitle, setEmailTitle, "string")}
+
                         <td>
                             <button className={styles.btn} onClick={addItemHandler}>Добавить</button>
                         </td>
