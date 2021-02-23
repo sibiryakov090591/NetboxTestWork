@@ -1,10 +1,11 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import styles from "./Task2.module.css";
-import {DataGrid, ColDef} from '@material-ui/data-grid';
+import {DataGrid, ColDef, setPageActionCreator} from '@material-ui/data-grid';
 import {useDispatch, useSelector} from "react-redux";
 import {addItemAPI, initializeAPI} from "./reducer";
 import {GlobalStateType} from "./store";
 import {EditableElement} from "./EditebleElement/EditableElement";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const Task2: React.FC = () => {
 
@@ -75,7 +76,7 @@ const Task2: React.FC = () => {
     }
 
     // Show preloader before initialization data success
-    if (!tableData) return <h1>Загрузка...</h1>
+    if (!tableData) return <div style={{height: "100vh", padding: "30% 50%"}}><CircularProgress /></div>
 
     // Default table values
     let mapTableHeaders: JSX.Element | JSX.Element[] = (
