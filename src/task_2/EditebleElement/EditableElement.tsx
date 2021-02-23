@@ -27,21 +27,19 @@ export const EditableElement: React.FC<PropsType> = React.memo(((props) => {
         dispatch(updateItemAPI(+id, nameTitle, ageTitle, phoneTitle, emailTitle))
     }
 
-    // Setters input values
-    const onChangeNameTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNameTitle(e.currentTarget.value)
-    }
-    const onChangeAgeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value
-        setAgeTitle(Number(value))
-    }
-    const onChangePhoneTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setPhoneTitle(e.currentTarget.value)
-    }
-    const onChangeEmailTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setEmailTitle(e.currentTarget.value)
-    }
+    // Setter inputs values
+    const onChangeTitleHandler = (callback: any, eventTargetValueType: string) => {
 
+        if (eventTargetValueType === "number") {
+            return (e: ChangeEvent<HTMLInputElement>) => {
+                callback(Number(e.currentTarget.value))
+            }
+        } else {
+            return (e: ChangeEvent<HTMLInputElement>) => {
+                callback(e.currentTarget.value)
+            }
+        }
+    }
 
     // render
     return (
@@ -50,22 +48,22 @@ export const EditableElement: React.FC<PropsType> = React.memo(((props) => {
             <td>{editMode ? <input className={styles.input}
                                    type="text"
                                    value={nameTitle}
-                                   onChange={onChangeNameTitleHandler}/> : name}
+                                   onChange={onChangeTitleHandler(setNameTitle, "string")}/> : name}
             </td>
             <td>{editMode ? <input className={styles.input}
                                    type="number"
                                    value={ageTitle}
-                                   onChange={onChangeAgeTitleHandler}/> : age}
+                                   onChange={onChangeTitleHandler(setAgeTitle, "number")}/> : age}
             </td>
             <td>{editMode ? <input className={styles.input}
                                    type="text"
                                    value={phoneTitle}
-                                   onChange={onChangePhoneTitleHandler}/> : phone}
+                                   onChange={onChangeTitleHandler(setPhoneTitle, "string")}/> : phone}
             </td>
             <td>{editMode ? <input className={styles.input}
                                    type="text"
                                    value={emailTitle}
-                                   onChange={onChangeEmailTitleHandler}/> : email}
+                                   onChange={onChangeTitleHandler(setEmailTitle, "string")}/> : email}
             </td>
             <td>
                 {

@@ -52,19 +52,19 @@ const Task2: React.FC = () => {
 
 
     // add item inputs handlers
-    const onChangeNameTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNameTitle(e.currentTarget.value)
+    const onChangeTitleHandler = (callback: any, eventTargetValueType: string) => {
+
+        if (eventTargetValueType === "number") {
+            return (e: ChangeEvent<HTMLInputElement>) => {
+                callback(Number(e.currentTarget.value))
+            }
+        } else {
+            return (e: ChangeEvent<HTMLInputElement>) => {
+                callback(e.currentTarget.value)
+            }
+        }
     }
-    const onChangeAgeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value
-        setAgeTitle(Number(value))
-    }
-    const onChangePhoneTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setPhoneTitle(e.currentTarget.value)
-    }
-    const onChangeEmailTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setEmailTitle(e.currentTarget.value)
-    }
+
     const addItemHandler = () => {
         dispatch(addItemAPI(nameTitle, ageTitle, phoneTitle, emailTitle))
         // clear inputs
@@ -115,22 +115,22 @@ const Task2: React.FC = () => {
                         <td></td>
                         <td>
                             <input value={nameTitle}
-                                   onChange={onChangeNameTitleHandler}
+                                   onChange={onChangeTitleHandler(setNameTitle, "string")}
                                    type="text"/>
                         </td>
                         <td>
                             <input value={ageTitle}
-                                   onChange={onChangeAgeTitleHandler}
+                                   onChange={onChangeTitleHandler(setAgeTitle, "number")}
                                    type="number"/>
                         </td>
                         <td>
                             <input value={phoneTitle}
-                                   onChange={onChangePhoneTitleHandler}
+                                   onChange={onChangeTitleHandler(setPhoneTitle, "string")}
                                    type="text"/>
                         </td>
                         <td>
                             <input value={emailTitle}
-                                   onChange={onChangeEmailTitleHandler}
+                                   onChange={onChangeTitleHandler(setEmailTitle, "string")}
                                    type="text"/>
                         </td>
                         <td>
